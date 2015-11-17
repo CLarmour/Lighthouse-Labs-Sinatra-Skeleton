@@ -4,11 +4,12 @@ get '/' do
 end
 
 get '/messages' do
-  @messages = Message.all
+  @messages = Message.order(created_at: :desc)
   erb :'messages/index'
 end
 
 get '/messages/new' do
+  @message = Message.new
   erb :'messages/new'
 end
 
@@ -19,9 +20,9 @@ end
 
 post '/messages' do
   @message = Message.new(
-    title: params[:title],
     content: params[:content],
-    author: params[:author]
+    author: params[:author],
+    url: params[:url]
   )
   if @message.save
   redirect '/messages'
